@@ -57,11 +57,17 @@ async def save_message(message: Message):
         VALUES (?, ?, ?, ?)
         ON CONFLICT(id) DO NOTHING
         """,
-        (message.id, message.content, message.author.id, message.channel.id)
+        (message.id, message.content, message.author.id, message.channel.name)
     )
 
 async def get_all_messages():
     async with get_db().execute("SELECT * FROM messages") as cursor:
+        return await cursor.fetchall()
+
+async def message_count():
+    async with get_db().execute(
+        "SELECT COUNT(*) FROM messages"
+    ) as cursor:
         return await cursor.fetchall()
 
 async def get_messages_channel(channel_id: int):
@@ -70,10 +76,24 @@ async def get_messages_channel(channel_id: int):
         (channel_id,)
     ) as cursor:
         return await cursor.fetchall()
+
+async def message_count_channel(channel_id: int):
+    async with get_db().execute(
+        "SELECT COUNT(*) FROM messages WHERE channel = ?",
+        (channel_id,)
+    ) as cursor:
+        return await cursor.fetchall()
     
 async def get_messages_user(user_id: int):
     async with get_db().execute(
         "SELECT * FROM messages WHERE user = ?",
+        (user_id,)
+    ) as cursor:
+        return await cursor.fetchall()
+    
+async def message_count_user(user_id: int):
+    async with get_db().execute(
+        "SELECT COUNT(*) FROM messages WHERE user = ?",
         (user_id,)
     ) as cursor:
         return await cursor.fetchall()

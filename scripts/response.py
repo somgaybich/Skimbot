@@ -18,7 +18,7 @@ async def followup_response(followup: Webhook, title: str, message: str,
             description=message
         )
         if footer is not None:
-            embed.set_footer(footer)
+            embed.set_footer(text=footer)
 
         if view is not None:
             await followup.send(embed=embed, view=view, ephemeral=ephemeral)
