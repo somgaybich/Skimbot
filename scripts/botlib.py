@@ -25,7 +25,7 @@ class SkimBot(discord.Bot):
         logger.info("Setup complete!")
     
     async def on_message(self, message):
-        save_message(message)
+        await save_message(message)
 
 bot = SkimBot()
 
