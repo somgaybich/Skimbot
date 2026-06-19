@@ -10,6 +10,7 @@ log_setup()
 logger = logging.getLogger(__name__)
 
 from scripts.botlib import bot
+from scripts.database import get_db
 
 tracemalloc.start()
 
@@ -35,3 +36,4 @@ if __name__ == "__main__":
         pass
     finally:
         logger.critical("Shutting down.")
+        asyncio.run(get_db().commit())
