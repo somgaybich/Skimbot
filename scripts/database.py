@@ -55,6 +55,7 @@ async def save_message(message: Message):
             id, content, user, channel
         )
         VALUES (?, ?, ?, ?)
+        ON CONFLICT(id) DO NOTHING
         """,
         (message.id, message.content, message.author.id, message.channel.id)
     )
