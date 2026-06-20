@@ -1,8 +1,6 @@
 @echo off
 setlocal
 
-call "%~dp0.venv\Scripts\activate.bat"
-
-python "%~dp0bot.py" %*
+"%~dp0.venv\Scripts\python.exe" "%~dp0core.py" %*
 
 endlocal
