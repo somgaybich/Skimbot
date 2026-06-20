@@ -1,11 +1,12 @@
 import logging
 import discord
 import time
+from discord.ext import tasks
 
 logger = logging.getLogger(__name__)
 
 from scripts.constants import OPGUILD_ID
-from scripts.database import init_db, save_message
+from scripts.database import init_db, save_message, get_db
 
 class SkimBot(discord.Bot):
     def __init__(self, **kwargs):
@@ -26,6 +27,19 @@ class SkimBot(discord.Bot):
     
     async def on_message(self, message):
         await save_message(message)
+
+    @tasks.loop(minutes=5)
+    async def db_commit(self):
+        logger.info("Committing database...")
+        try:
+            await get_db().commit()
+            logger.info("Committed all database changes")
+        except RuntimeError:
+            # This is raised on startup because the initial database commit always fails
+            logger.debug("Initial commit failed, this is expected behavior")
+        except Exception as e:
+            logger.error(f"Unable to commit database: {e}")
+            raise
 
 bot = SkimBot()
 
