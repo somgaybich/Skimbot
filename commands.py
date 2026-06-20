@@ -75,7 +75,7 @@ class CommandCog(discord.Cog):
                         continue
                     if word in banned_words:
                         continue
-                    if "@" in word:
+                    if "@" in word or "#" in word or ":" in word:
                         continue
 
                     if word in word_freq.keys():
@@ -102,8 +102,6 @@ class CommandCog(discord.Cog):
                 expected = 10**(zipf_frequency(word, 'en') - 9)
                 observed = word_freq[word] / length
                 score = log2(observed / expected)
-                if expected == 0:
-                    score = 0
                 data.update({word: score})
 
             top_words = sorted(
