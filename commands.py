@@ -6,6 +6,7 @@ from scripts.response import followup_response, followup_error
 from scripts.constants import banned_words, banned_channels
 import re
 from wordfreq import zipf_frequency
+from math import log2
 
 import logging
 logger = logging.getLogger(__name__)
@@ -63,6 +64,8 @@ class CommandCog(discord.Cog):
 
                 if channel_name in banned_channels:
                     continue
+                if "http://" in text or "https://" in text:
+                    continue
                 
                 pattern = r'<[@#&]!??\d+>|<a?:\w+:\d+>|\b\w+\b'
                 words = re.findall(pattern, text.lower())
@@ -71,6 +74,8 @@ class CommandCog(discord.Cog):
                     if len(word) <= 1 and word not in ["i", "a"]:
                         continue
                     if word in banned_words:
+                        continue
+                    if "@" in word:
                         continue
 
                     if word in word_freq.keys():
