@@ -99,10 +99,12 @@ class CommandCog(discord.Cog):
             data = {}
             length = sum(word_freq.values())
             for word in word_freq:
-                freq_general = zipf_frequency(word, 'en')
-                freq_dataset = word_freq[word] / length
-                diff = freq_dataset - 10**(freq_general - 9)
-                data.update({word: diff})
+                expected = 10**(zipf_frequency(word, 'en') - 9)
+                observed = word_freq[word] / length
+                score = log2(observed / expected)
+                if expected == 0:
+                    score = 0
+                data.update({word: score})
 
             top_words = sorted(
                 data,
