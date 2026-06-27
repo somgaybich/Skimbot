@@ -5,7 +5,6 @@ from discord.ext import tasks
 
 logger = logging.getLogger(__name__)
 
-from scripts.constants import OPGUILD_ID
 from scripts.database import init_db, save_message, get_db
 
 class SkimBot(discord.Bot):
