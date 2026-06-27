@@ -1,2 +1,3 @@
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-"$SCRIPT_DIR/.venv/bin/python" "$SCRIPT_DIR/core.py" "$@"
+PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
+"$PROJECT_DIR/.venv/bin/python" "$PROJECT_DIR/core.py" "$@"
