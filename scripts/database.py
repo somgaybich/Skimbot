@@ -30,7 +30,8 @@ async def init_db(file: str = "data/data.db"):
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         content TEXT,
         user INTEGER,
-        channel TEXT)
+        channel TEXT,
+        server INTEGER)
     """)
     logger.debug("Created messages table")
 
@@ -52,12 +53,18 @@ async def save_message(message: Message):
     await get_db().execute(
         """
         INSERT INTO messages (
-            id, content, user, channel
+            id, content, user, channel, server
         )
-        VALUES (?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?)
         ON CONFLICT(id) DO NOTHING
         """,
-        (message.id, message.content, message.author.id, message.channel.name)
+        (
+            message.id, 
+            message.content, 
+            message.author.id, 
+            message.channel.name,
+            message.guild.id
+        )
     )
 
 async def get_all_messages():
