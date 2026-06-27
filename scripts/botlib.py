@@ -12,7 +12,7 @@ class SkimBot(discord.Bot):
     def __init__(self, **kwargs):
         intents = discord.Intents.default()
         intents.message_content = True
-        kwargs.setdefault("intents", discord.Intents.default())
+        kwargs.setdefault("intents", intents)
         super().__init__(**kwargs)
 
     async def on_ready(self):
@@ -48,4 +48,4 @@ async def sync(bot: SkimBot) -> None:
     Sync application commands with Discord.
     """
     logger.info("Syncing commands")
-    await bot.sync_commands(guild_ids=[OPGUILD_ID])
+    await bot.sync_commands()
