@@ -71,9 +71,10 @@ async def get_all_messages():
     async with get_db().execute("SELECT * FROM messages") as cursor:
         return await cursor.fetchall()
 
-async def message_count():
+async def message_count(server_id: int):
     async with get_db().execute(
-        "SELECT COUNT(*) FROM messages"
+        "SELECT COUNT(*) FROM messages WHERE server = ?",
+        (server_id,)
     ) as cursor:
         return await cursor.fetchall()
 
@@ -91,16 +92,16 @@ async def message_count_channel(channel_id: int):
     ) as cursor:
         return await cursor.fetchall()
     
-async def get_messages_user(user_id: int):
+async def get_messages_user(user_id: int, server_id: int):
     async with get_db().execute(
-        "SELECT * FROM messages WHERE user = ?",
-        (user_id,)
+        "SELECT * FROM messages WHERE user = ? AND server = ?",
+        (user_id, server_id,)
     ) as cursor:
         return await cursor.fetchall()
     
-async def message_count_user(user_id: int):
+async def message_count_user(user_id: int, server_id: int):
     async with get_db().execute(
-        "SELECT COUNT(*) FROM messages WHERE user = ?",
-        (user_id,)
+        "SELECT COUNT(*) FROM messages WHERE user = ? AND server = ?",
+        (user_id, server_id)
     ) as cursor:
         return await cursor.fetchall()

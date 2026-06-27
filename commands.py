@@ -58,7 +58,10 @@ class CommandCog(discord.Cog):
             word_freq = {}
             channel_freq = {}
             
-            for message in await get_messages_user(ctx.author.id):
+            for message in await get_messages_user(
+                ctx.author.id, 
+                ctx.interaction.guild.id
+            ):
                 text: str = message['content']
                 channel_name: str = message['channel']
 
