@@ -45,7 +45,7 @@ async def interaction_response(interaction: Interaction, title: str,
             )
         
         if footer is not None:
-            embed.set_footer(footer)
+            embed.set_footer(text=footer)
         
         if view is not None:
             await interaction.response.send_message(embed=embed, view=view, 
