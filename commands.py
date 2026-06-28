@@ -61,7 +61,7 @@ class CommandCog(discord.Cog):
                     "them compared to a general sample. More data is coming " \
                     "in the future!\n\n" \
                     "General sample data comes from the [Exquisite Corpus]" \
-                    "(https://github.com/LuminosoInsight/exquisite-corpus)"
+                    "(https://github.com/LuminosoInsight/exquisite-corpus)."
                 )
 
     @discord.slash_command(description="Load this server's messages " \
