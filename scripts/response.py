@@ -1,4 +1,4 @@
-from discord import Interaction, Embed, Webhook
+from discord import Interaction, Embed, Webhook, errors
 import logging
 
 from scripts.constants import brand_color, LOGGING_CHANNEL_ID, backup_msg
@@ -24,6 +24,9 @@ async def followup_response(followup: Webhook, title: str, message: str,
             await followup.send(embed=embed, view=view, ephemeral=ephemeral)
         else:
             await followup.send(embed=embed, ephemeral=ephemeral)
+    except errors.HTTPException as e:
+        if e.code == 401:
+            logger.error(f"Failed to send response message: webhook token expired.")
     except Exception as e:
         logger.error(f"Failed to send response message: {e}")
         raise
