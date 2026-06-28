@@ -70,6 +70,9 @@ async def followup_error(followup: Webhook, message = ""):
             title="Oops!",
             description=message if message != "" else backup_msg
         ), ephemeral=True)
+    except errors.HTTPException as e:
+        if e.code == 401:
+            logger.error(f"Failed to send response message: webhook token expired.")
     except Exception as e:
         logger.error(f"Failed to send error message: {e}")
         raise
