@@ -38,7 +38,6 @@ class CommandCog(discord.Cog):
                     "value on this command.\n\n" \
                     "If you're a nerd and you're curious how skimbot works, " \
                     "visit the [repo](https://github.com/somgaybich/Skimbot)!",
-                    footer=""
                 )
             case 1:
                 await interaction_response(
