@@ -70,8 +70,16 @@ class CommandCog(discord.Cog):
     async def scrape(self, ctx: ApplicationContext):
         total_count = 0
         try:
-            await ctx.interaction.response.defer()
-            logger.info(f"Starting scrape in '{ctx.interaction.guild.name}'")
+            guild_name = ctx.interaction.guild.name
+            await interaction_response(
+                interaction=ctx.interaction,
+                title="Starting scrape!",
+                message="Starting a scrape of all the message history in " \
+                f"{guild_name}. This may take a while.",
+                footer="I'll send a message in this channel to let you know " \
+                "when I'm done."
+            )
+            logger.info(f"Starting scrape in '{guild_name}'")
             
             guild = ctx.interaction.guild
             for channel in guild.text_channels:
