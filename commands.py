@@ -2,7 +2,8 @@ import discord
 from discord import ApplicationContext
 from scripts.database import (save_message, get_all_messages, 
                               get_messages_channel, get_messages_user)
-from scripts.response import followup_response, followup_error
+from scripts.response import (followup_response, followup_error, 
+                              interaction_response)
 from scripts.constants import banned_words, banned_channels
 import re
 from wordfreq import zipf_frequency
@@ -14,6 +15,51 @@ logger = logging.getLogger(__name__)
 class CommandCog(discord.Cog):
     def __init__(self, bot: discord.Bot):
         self.bot = bot
+
+    @discord.slash_command(description="Get help on the bot.")
+    @discord.option("item", input_type=int, choices=[
+        discord.OptionChoice(name="general", value=0, description="What is skimbot?"),
+        discord.OptionChoice(name="scrape", value=1),
+        discord.OptionChoice(name="analyze", value=2)
+    ])
+    async def help(self, ctx: ApplicationContext, item: int):
+        match item:
+            case 0:
+                await interaction_response(
+                    interaction=ctx.interaction,
+                    title="Skimbot",
+                    message="Skimbot allows your members to perform word " \
+                    "frequency analysis on their own messages.\nIt does this by " \
+                    "collecting the content and some basic data about each " \
+                    "message and storing it in a local database (nothing " \
+                    "identifying!)\n\nGet started by using /scrape, then anyone" \
+                    "can use /analyze to see their stats.",
+                    footer="If you're a nerd and you're curious how skimbot " \
+                    "works, visit the [repo](https://github.com/somgaybich/Skimbot)"
+                )
+            case 1:
+                await interaction_response(
+                    interaction=ctx.interaction,
+                    title="Scrape",
+                    message="Scrape allows skimbot to collect data about " \
+                    "messages sent before it was added to the server. For very " \
+                    "large servers with lots of message history, it may take " \
+                    "several hours.",
+                    footer="Your message data is securely stored in a database " \
+                    "that cannot be accessed from the internet."
+                )
+            case 2:
+                await interaction_response(
+                    interaction=ctx.interaction,
+                    title="Analyze",
+                    message="Analyze creates a little profile of your stats. " \
+                    "It includes your top channels by message count, and your " \
+                    "top words, calculated by how frequently you say them " \
+                    "compared to a general sample. More data is coming in the " \
+                    "future!",
+                    footer="General sample data comes from the " \
+                    "[Exquisite Corpus](https://github.com/LuminosoInsight/exquisite-corpus)"
+                )
 
     @discord.slash_command(description="""Load this server's messages into the bot's memory.""")
     @discord.default_permissions(administrator=True)
