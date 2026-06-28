@@ -17,8 +17,8 @@ class CommandCog(discord.Cog):
         self.bot = bot
 
     @discord.slash_command(description="Get help on the bot.")
-    @discord.option("item", input_type=int, choices=[
-        discord.OptionChoice(name="general", value=0, description="What is skimbot?"),
+    @discord.option("item", input_type=int, default=0, choices=[
+        discord.OptionChoice(name="general", value=0),
         discord.OptionChoice(name="scrape", value=1),
         discord.OptionChoice(name="analyze", value=2)
     ])
@@ -33,7 +33,9 @@ class CommandCog(discord.Cog):
                     "collecting the content and some basic data about each " \
                     "message and storing it in a local database (nothing " \
                     "identifying!)\n\nGet started by using /scrape, then anyone" \
-                    "can use /analyze to see their stats.",
+                    "can use /analyze to see their stats. You can see help on " \
+                    "all of Skimbot's commands by filling in the 'item' " \
+                    "value on this command.",
                     footer="If you're a nerd and you're curious how skimbot " \
                     "works, visit the [repo](https://github.com/somgaybich/Skimbot)"
                 )
