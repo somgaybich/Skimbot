@@ -18,7 +18,7 @@ python3 core.py
 ```
 ...or use the script files provided.
 ```bash
-/bin/skimbot.sh
+./bin/skimbot.sh
 ````
 
 ## Dependencies
