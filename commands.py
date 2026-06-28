@@ -32,7 +32,7 @@ class CommandCog(discord.Cog):
                     "frequency analysis on their own messages, by " \
                     "collecting the content and some basic data about each " \
                     "message and storing it in a global database.\n\n" \
-                    "Get started by using /scrape, then anyone" \
+                    "Get started by using /scrape, then anyone " \
                     "can use /analyze to see their stats. You can see help " \
                     "on all of Skimbot's commands by filling in the 'item' " \
                     "value on this command.\n\n" \
@@ -108,9 +108,8 @@ class CommandCog(discord.Cog):
             "this server! You can now /analyze to get your results."
         )
     
-    @discord.slash_command(description="Run analysis on your messages in " \
-                                        "this server and create a simple " \
-                                        "report.")
+    @discord.slash_command(description="Analyze your messages in " \
+                                       "this server.")
     async def analyze(self, ctx: ApplicationContext):
         await ctx.interaction.response.defer()
         
