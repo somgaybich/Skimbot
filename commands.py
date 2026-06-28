@@ -3,7 +3,7 @@ from discord import ApplicationContext
 from scripts.database import (save_message, get_all_messages, 
                               get_messages_channel, get_messages_user)
 from scripts.response import (followup_response, followup_error, 
-                              interaction_response)
+                              interaction_response, send_msg)
 from scripts.constants import banned_words, banned_channels
 import re
 from wordfreq import zipf_frequency
@@ -101,11 +101,12 @@ class CommandCog(discord.Cog):
             raise
 
         print(f"Retrieved {total_count} messages.")
-        await followup_response(
-            followup=ctx.followup, 
+        await send_msg(
+            channel=ctx.interaction.channel,
             title="Scrape complete!",
-            message=f"I collected data for {total_count} messages in " \
-                    "this server!")
+            message=f"I collected data for all {total_count} messages in " \
+            "this server! You can now /analyze to get your results."
+        )
     
     @discord.slash_command(description="Run analysis on your messages in " \
                                         "this server and create a simple " \

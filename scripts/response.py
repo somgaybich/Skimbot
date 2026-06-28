@@ -1,10 +1,33 @@
-from discord import Interaction, Embed, Webhook, errors
+from discord import Interaction, Embed, Webhook, errors, Thread
+from discord.abc import GuildChannel, PrivateChannel
 import logging
 
 from scripts.constants import brand_color, LOGGING_CHANNEL_ID, backup_msg
 from scripts.botlib import bot
 
 logger = logging.getLogger(__name__)
+
+async def send_msg(channel: GuildChannel | PrivateChannel | Thread, title: str,
+                   message: str, footer=None, view=None):
+    """
+    Sends a message in a specific channel.
+    """
+    try:
+        embed = Embed(
+            color=brand_color,
+            title=title,
+            description=message
+        )
+        if footer is not None:
+            embed.set_footer(text=footer)
+        
+        if view is not None:
+            await channel.send(embed=embed, view=view)
+        else:
+            await channel.send(embed=embed)
+    except Exception as e:
+        logger.error(f"Failed to send response message: {e}")
+        raise
 
 async def followup_response(followup: Webhook, title: str, message: str, 
                             ephemeral=False, footer=None, view=None):
