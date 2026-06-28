@@ -16,7 +16,7 @@ class CommandCog(discord.Cog):
         self.bot = bot
 
     @discord.slash_command(description="""Load this server's messages into the bot's memory.""")
-    @discord.default_permissions(manage_messages=True)
+    @discord.default_permissions(administrator=True)
     async def scrape(self, ctx: ApplicationContext):
         total_count = 0
         try:
