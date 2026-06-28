@@ -29,41 +29,44 @@ class CommandCog(discord.Cog):
                     interaction=ctx.interaction,
                     title="Skimbot",
                     message="Skimbot allows your members to perform word " \
-                    "frequency analysis on their own messages.\nIt does this by " \
+                    "frequency analysis on their own messages, by " \
                     "collecting the content and some basic data about each " \
-                    "message and storing it in a local database (nothing " \
-                    "identifying!)\n\nGet started by using /scrape, then anyone" \
-                    "can use /analyze to see their stats. You can see help on " \
-                    "all of Skimbot's commands by filling in the 'item' " \
-                    "value on this command.",
-                    footer="If you're a nerd and you're curious how skimbot " \
-                    "works, visit the [repo](https://github.com/somgaybich/Skimbot)"
+                    "message and storing it in a global database.\n\n" \
+                    "Get started by using /scrape, then anyone" \
+                    "can use /analyze to see their stats. You can see help " \
+                    "on all of Skimbot's commands by filling in the 'item' " \
+                    "value on this command.\n\n" \
+                    "If you're a nerd and you're curious how skimbot works, " \
+                    "visit the [repo](https://github.com/somgaybich/Skimbot)!",
+                    footer=""
                 )
             case 1:
                 await interaction_response(
                     interaction=ctx.interaction,
                     title="Scrape",
                     message="Scrape allows skimbot to collect data about " \
-                    "messages sent before it was added to the server. For very " \
-                    "large servers with lots of message history, it may take " \
-                    "several hours.",
-                    footer="Your message data is securely stored in a database " \
-                    "that cannot be accessed from the internet."
+                    "messages sent before it was added to the server. For " \
+                    "very large servers with lots of message history, it " \
+                    "may take several hours. Because of the high server " \
+                    "load, only an admin can start a scrape.",
+                    footer="Your message data is securely stored in a " \
+                    "database that cannot be accessed from the internet."
                 )
             case 2:
                 await interaction_response(
                     interaction=ctx.interaction,
                     title="Analyze",
-                    message="Analyze creates a little profile of your stats. " \
-                    "It includes your top channels by message count, and your " \
-                    "top words, calculated by how frequently you say them " \
-                    "compared to a general sample. More data is coming in the " \
-                    "future!",
-                    footer="General sample data comes from the " \
-                    "[Exquisite Corpus](https://github.com/LuminosoInsight/exquisite-corpus)"
+                    message="Analyze creates a little profile of your stats." \
+                    " It includes your top channels by message count, and " \
+                    "your top words, calculated by how frequently you say " \
+                    "them compared to a general sample. More data is coming " \
+                    "in the future!\n\n" \
+                    "General sample data comes from the [Exquisite Corpus]" \
+                    "(https://github.com/LuminosoInsight/exquisite-corpus)"
                 )
 
-    @discord.slash_command(description="""Load this server's messages into the bot's memory.""")
+    @discord.slash_command(description="Load this server's messages " \
+                                        "into the bot's memory.")
     @discord.default_permissions(administrator=True)
     async def scrape(self, ctx: ApplicationContext):
         total_count = 0
@@ -94,9 +97,12 @@ class CommandCog(discord.Cog):
         await followup_response(
             followup=ctx.followup, 
             title="Scrape complete!",
-            message=f"I collected data for {total_count} messages in this server!")
+            message=f"I collected data for {total_count} messages in " \
+                    "this server!")
     
-    @discord.slash_command(description="""Run analysis on your messages in this server and create a simple report.""")
+    @discord.slash_command(description="Run analysis on your messages in " \
+                                        "this server and create a simple " \
+                                        "report.")
     async def analyze(self, ctx: ApplicationContext):
         await ctx.interaction.response.defer()
         
@@ -169,7 +175,8 @@ class CommandCog(discord.Cog):
             for channel in top_channels:
                 result_str += f"- #{channel}: sent {channel_freq[channel]} messages\n"
         except Exception as e:
-            logger.error(f"Failed to analyze messages for '{ctx.author.name}': {e}")
+            logger.error(f"Failed to analyze messages for " \
+                         "'{ctx.author.name}': {e}")
             await followup_error(ctx.followup)
 
         await followup_response(
