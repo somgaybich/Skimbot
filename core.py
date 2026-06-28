@@ -5,7 +5,7 @@ import tracemalloc
 import logging
 
 from scripts.log import log_setup
-log_setup(console=True)
+log_setup()
 
 logger = logging.getLogger(__name__)
 
