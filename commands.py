@@ -49,7 +49,7 @@ class CommandCog(discord.Cog):
                     "may take several hours. Because of the high server " \
                     "load, only an admin can start a scrape.",
                     footer="Your message data is securely stored in a " \
-                    "database that cannot be accessed from the internet."
+                    "local database."
                 )
             case 2:
                 await interaction_response(
