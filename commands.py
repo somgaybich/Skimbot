@@ -59,6 +59,15 @@ class CommandCog(discord.Cog):
                     "your top words, calculated by how frequently you say " \
                     "them compared to a general sample. More data is coming " \
                     "in the future!\n\n" \
+                    " You can select from any of several scoring modes. The" \
+                    "**default** uses logs to get the most 'interesting' words" \
+                    "(in my opinion) you've said the most.\n" \
+                    " Alternatively, you can use **raw** to ignore the corpus" \
+                    "and just find your most frequently said words. It's" \
+                    "probably 'the'!" \
+                    " You can also use the **real** mode to limit your" \
+                    "results to only use real words, excluding things like" \
+                    "proper nouns.\n\n"
                     "General sample data comes from the [Exquisite Corpus]" \
                     "(https://github.com/LuminosoInsight/exquisite-corpus)."
                 )
