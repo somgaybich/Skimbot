@@ -5,9 +5,8 @@ from scripts.database import (save_message, get_all_messages,
 from scripts.response import (followup_response, followup_error, 
                               interaction_response, send_msg)
 from scripts.constants import banned_words, banned_channels
+from scripts.score import score
 import re
-from wordfreq import zipf_frequency
-from math import log2
 
 import logging
 logger = logging.getLogger(__name__)
@@ -110,7 +109,12 @@ class CommandCog(discord.Cog):
     
     @discord.slash_command(description="Analyze your messages in " \
                                        "this server.")
-    async def analyze(self, ctx: ApplicationContext):
+    @discord.option("mode", input_type=int, default=0, choices=[
+        discord.OptionChoice(name="default", value=0),
+        discord.OptionChoice(name="raw", value=1),
+        discord.OptionChoice(name="real", value=2)
+    ])
+    async def analyze(self, ctx: ApplicationContext, mode):
         await ctx.interaction.response.defer()
         
         result_str = ""
@@ -141,6 +145,8 @@ class CommandCog(discord.Cog):
                         continue
                     if "@" in word or "#" in word or ":" in word:
                         continue
+                    if word.isdigit():
+                        continue
 
                     if word in word_freq.keys():
                         word_freq[word] += 1
@@ -162,11 +168,10 @@ class CommandCog(discord.Cog):
 
             data = {}
             length = sum(word_freq.values())
-            for word in word_freq:
-                expected = 10**(zipf_frequency(word, 'en') - 9)
-                observed = word_freq[word] / length
-                score = log2(observed / expected)
-                data.update({word: score})
+            for word, num in word_freq.items():
+                word_score = score(word, num, length, mode)
+                if word_score != 0:
+                    data[word] = word_score
 
             top_words = sorted(
                 data,
@@ -182,8 +187,8 @@ class CommandCog(discord.Cog):
             for channel in top_channels:
                 result_str += f"- #{channel}: sent {channel_freq[channel]} messages\n"
         except Exception as e:
-            logger.error(f"Failed to analyze messages for " \
-                         "'{ctx.author.name}': {e}")
+            logger.error(f"Failed to analyze messages for \
+                         '{ctx.author.name}': {e}")
             await followup_error(ctx.followup)
 
         await followup_response(
