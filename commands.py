@@ -200,12 +200,28 @@ class CommandCog(discord.Cog):
                          '{ctx.author.name}': {e}")
             await followup_error(ctx.followup)
 
-        await followup_response(
-            followup=ctx.followup,
-            title="Your results",
-            message=result_str,
-            footer="Top words found by comparison with the Exquisite Corpus."
-        )
+        match mode:
+            case 0:
+                await followup_response(
+                    followup=ctx.followup,
+                    title="Your results",
+                    message=result_str,
+                    footer="Top words found by comparison with the Exquisite Corpus."
+                )
+            case 1:
+                await followup_response(
+                    followup=ctx.followup,
+                    title="Your results (Raw mode)",
+                    message=result_str,
+                    footer="Top words found by comparison with the Exquisite Corpus."
+                )
+            case 2:
+                await followup_response(
+                    followup=ctx.followup,
+                    title="Your results (Real mode)",
+                    message=result_str,
+                    footer="Top words found by comparison with the Exquisite Corpus."
+                )
 
 def setup(bot: discord.Bot):
     try:
